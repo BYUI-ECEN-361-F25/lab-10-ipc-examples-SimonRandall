@@ -1,5 +1,5 @@
 # ECEN-361 Lab-10: IPC-Examples
-     Student Name:  ___________________________________
+     Student Name: Simon Randall ___________________________________
 
 ## Introduction and Objectives of the Lab
 
@@ -80,12 +80,12 @@ Now make sure to write the code inside of the Semaphore_Toggle_Task function tha
 
 <br>
 1. How did your task ‘wait’ for the debounced button? <br>
-<mark>_______________________________________________________ </mark>
+<mark>It takes the semaphore and has a wait time that is set to a very large number, it is evendefined as osWaitForever. </mark>
 <br>
 <br><br>
 
 2.)	How long is the time between the button interrupt coming in and it being enabled again? <br>
-<mark>_______________________________________________________ </mark>
+<mark>20 milliseconds because that is what my delay is set to. </mark>
 ><br>
 > <br>
 
@@ -96,11 +96,11 @@ Now create a second task (semaphore_Toggle_D3) -- <p>
 
 
 3.)	Do both of (D4 and D3) toggle with a single button press?  Describe the behavior?  <br>
-<mark>_________________________________________________________________________________<br><br>
+<mark>No pressing button1 only toggles one led at a time.<br><br>
 
 4.)	Now change one of the priorities of these two tasks, re-compile,  and re-run.
 How has the behavior changed?
-<mark>_________________________________________________________________________________<br><br>
+<mark>I changed the priority to be higher for the D3 LED and now only that one toggles and the other one is completely ignored.<br><br>
 
 
 ## Part 2: Mutexes
@@ -152,12 +152,11 @@ current count. The first two processes are done for you "Mutex_CountDownTask" an
 >
 ><br>
 >7.)	Comment on the Up/Down/ ”—” display that you see.  <br><br>
-><mark>___________________________________________________________________________________________________________<br><br><p>
-
+><mark>The updown timers are still fighting for the screen, if I press button 3 the screen will someimes display a -- shortly or it will display a 50 and reset. <br><br><p>
 
 >8.)	Is there a ‘priority’ associated with the Mutex?  If so, how can it be changed?
 ><br>  
-><mark>___________________________________________________________________________________________________________<br><br>
+><mark>Yes there is a priority kind of. Whichever task has the semaphore has access to the mutex because it will take it. To change the mutex priority change the semahpore priortiy. <br><br>
 <p>
 
 ><br>
@@ -165,7 +164,7 @@ current count. The first two processes are done for you "Mutex_CountDownTask" an
 
 >  Change the priority of the Reset to be osPriorityIdle.  This is the lowest priority available. Note that you will not find this priority type listed in the .ioc configuration, as it is intended to be used for idle threads. This priority must be manually set in the code.<br>
 ><br> Did you see any effect on the ability of Button_3 to reset the count?<br><br>
-><mark>___________________________________________________________________________________________________________<br><br>
+><mark>It is still possible for it ot be reset to zero but it happens much less, instead it more frequently displays the --<br><br>
 >
 ---
 <!--------------------------------------------------------------------------------->
@@ -196,12 +195,12 @@ display digit.
 >
 >10.) This timer was created via the GUI  (.IOC file).  It’s type is *“osTimerPeriodic”* which means it repeats over and over.<br><br>
 What other options can a Software Timer take to change its Type and operation? <br>
-><mark>___________________________________________________________________________________________________________<br><br>
+><mark>The other option was to run once. It would not be a repeating timer.<br><br>
 
 >11).	The debounce for the switches here used an osDelay() call (non-blocking).  Is there any advantage to using a SWTimer here instead?<br>
 > Explain why or why not?
 >
-><mark>___________________________________________________________________________________________________________<br><br>
+><mark>HW timers can be more limited than software timers. So using a sw timer could be better in some situations. It can also be easier to set up. .<br><br>
 
 
 <!--------------------------------------------------------------------------------->
@@ -211,7 +210,7 @@ What other options can a Software Timer take to change its Type and operation? <
 >1.	The Seven-Seg Display is currently refreshed with a hardware (TIM17) timer.  Make this more thread-safe by changing the refresh as a process that is based off a S/W timer.
 >
 >Write about how you did it, and what the slowest period could be to keep the persistence looking good:
-><mark>___________________________________________________________________________________________________________<br><br>
+><mark>To do this I created a sw timer in the IOC GUI. I then had to start that timer in main(). I also had to disable teh current hardware timer so that the sw timer would be the one refreshing the screen. I found that around 10ms was the slowest the period could be before it became quite unbearable to look at. <br><br>
 
 >2.	We only used a binary semaphore in this lab for the switch presses.  Change it so that presses are accumulated through a counting semaphore and then handled as they are taken off.<br><br>
 >Describe any issues with this approach
